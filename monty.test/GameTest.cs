@@ -11,6 +11,7 @@ namespace monty.test
         public void TestSetupPrize()
         {
             Game g = new Game(1, false);
+            g.Setup();
             
             int goats = g.Doors.Count(x => x.prize == Prize.Goat);
             int cars = g.Doors.Count(x => x.prize == Prize.Car);
@@ -23,6 +24,8 @@ namespace monty.test
         public void TestSetupIsOpen()
         {
             Game g = new Game(0, true);
+            g.Setup();
+
             bool isOpen = g.Doors.Any(x => x.isOpen);
 
             Assert.False(isOpen);
@@ -32,11 +35,18 @@ namespace monty.test
         public void TestOpenFirstDoor()
         {
             Game g = new Game(0, false);
+            g.Setup();
 
             g.OpenFirstDoor();
 
             var openDoor = g.Doors.First(x => x.isOpen);
             Assert.Equal(Prize.Goat, openDoor.prize);
+        }
+
+        [Fact] // will throw argumentoutofrange
+        public void TestInvalidDoorChoice()
+        {
+
         }
     }
 }

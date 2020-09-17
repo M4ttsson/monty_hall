@@ -27,17 +27,18 @@ namespace monty.core
 
         public Game(int chosenDoor, bool isDoorChange)
         {
-            // TODO: Add check for max limit
             _chosenDoor = chosenDoor;
             _isDoorChange = isDoorChange;
             Doors = new (Prize, bool)[_numOfDoors];
             rand = new Random();
-
-            Setup();
         }
 
         public void Setup()
         {
+            // validate player door
+            if (_chosenDoor > _numOfDoors - 1)
+                throw new ArgumentOutOfRangeException("chosenDoor", "The chosen door exceeds number of doors");
+
             // hide the car, rest is default goats already as enum default = 0
             int carDoor = rand.Next(0, _numOfDoors); // 0 - 2
             Doors[carDoor] = (Prize.Car, false);
@@ -46,7 +47,10 @@ namespace monty.core
         // Main game method
         public void Run()
         {
-            
+            // 1. run setup if not done already (check with bool)
+            // 2. open first door
+            // 3. change door if so
+            // 4. check what prize and return it
         }
 
         public void OpenFirstDoor()
