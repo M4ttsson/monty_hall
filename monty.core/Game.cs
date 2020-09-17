@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-// allow test project to see class
-[assembly: InternalsVisibleTo("monty.test")]
 namespace monty.core
 {
     public enum Prize
@@ -12,12 +10,12 @@ namespace monty.core
         Car
     }
 
-    internal class Game
+    public class Game
     {
         // innehåller dörrar, get slumpmässigt bakom en av de. metod för att öppna en dörr. Byta dörr. osv. Vinst. 
         // Simulering innehåller många Game. Run(). 
         
-        internal Prize[] Doors { get; private set; }
+        public (Prize prize, bool isOpen)[] Doors { get; private set; }
 
         private int _chosenDoor;
         private bool _isDoorChange;
@@ -29,9 +27,10 @@ namespace monty.core
 
         public Game(int chosenDoor, bool isDoorChange)
         {
+            // TODO: Add check for max limit
             _chosenDoor = chosenDoor;
             _isDoorChange = isDoorChange;
-            Doors = new Prize[_numOfDoors];
+            Doors = new (Prize, bool)[_numOfDoors];
             rand = new Random();
 
             Setup();
@@ -40,13 +39,27 @@ namespace monty.core
         public void Setup()
         {
             // hide the car, rest is default goats already as enum default = 0
-            int carDoor = rand.Next(0, 3); // 0 - 2
-            Doors[carDoor] = Prize.Car;
+            int carDoor = rand.Next(0, _numOfDoors); // 0 - 2
+            Doors[carDoor] = (Prize.Car, false);
         }
 
+        // Main game method
         public void Run()
         {
             
+        }
+
+        public void OpenFirstDoor()
+        {
+            // Find a random goat door to open
+            int doorToOpen;
+            do 
+            {
+                doorToOpen = rand.Next(0, _numOfDoors);
+            }
+            while (Doors[doorToOpen].prize == Prize.Car);
+
+            Doors[doorToOpen].isOpen = true;
         }
     }
 }

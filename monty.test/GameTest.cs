@@ -8,15 +8,35 @@ namespace monty.test
     public class GameTest
     {
         [Fact]
-        public void TestSetup()
+        public void TestSetupPrize()
         {
             Game g = new Game(1, false);
             
-            int goats = g.Doors.Count(x => x == Prize.Goat);
-            int cars = g.Doors.Count(x => x == Prize.Car);
+            int goats = g.Doors.Count(x => x.prize == Prize.Goat);
+            int cars = g.Doors.Count(x => x.prize == Prize.Car);
             
             Assert.Equal(2, goats);
             Assert.Equal(1, cars);
+        }
+
+        [Fact]
+        public void TestSetupIsOpen()
+        {
+            Game g = new Game(0, true);
+            bool isOpen = g.Doors.Any(x => x.isOpen);
+
+            Assert.False(isOpen);
+        }
+
+        [Fact]
+        public void TestOpenFirstDoor()
+        {
+            Game g = new Game(0, false);
+
+            g.OpenFirstDoor();
+
+            var openDoor = g.Doors.First(x => x.isOpen);
+            Assert.Equal(Prize.Goat, openDoor.prize);
         }
     }
 }
