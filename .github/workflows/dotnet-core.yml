@@ -25,9 +25,11 @@ jobs:
       with:
         node-version: 12.18.3
       
-      # build dotnet
+      # build 
     - name: Install dependencies
       run: dotnet restore
+    - name: Install react dependencies
+      run: npm --prefix ./monty.web/ClientApp install
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
