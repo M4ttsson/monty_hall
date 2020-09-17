@@ -14,4 +14,4 @@ XUnit test project, mainly for testing the core project.
 
 
 # Github Actions
-
+Building and runnning tests using github actions. 
