@@ -11,10 +11,7 @@ namespace monty.core
     }
 
     public class Game
-    {
-        // innehåller dörrar, get slumpmässigt bakom en av de. metod för att öppna en dörr. Byta dörr. osv. Vinst. 
-        // Simulering innehåller många Game. Run(). 
-        
+    {   
         public (Prize prize, bool isOpen)[] Doors { get; private set; }
 
         private int _chosenDoor;
@@ -36,7 +33,7 @@ namespace monty.core
         public void Setup()
         {
             // validate player door
-            if (_chosenDoor > _numOfDoors - 1)
+            if (_chosenDoor > _numOfDoors - 1 || _chosenDoor < 0)
                 throw new ArgumentOutOfRangeException("chosenDoor", "The chosen door exceeds number of doors");
 
             // hide the car, rest is default goats already as enum default = 0
@@ -53,7 +50,7 @@ namespace monty.core
             // 4. check what prize and return it
         }
 
-        public void OpenFirstDoor()
+        public void OpenGoatDoor()
         {
             // Find a random goat door to open
             int doorToOpen;
@@ -61,7 +58,7 @@ namespace monty.core
             {
                 doorToOpen = rand.Next(0, _numOfDoors);
             }
-            while (Doors[doorToOpen].prize == Prize.Car);
+            while (Doors[doorToOpen].prize == Prize.Car || doorToOpen == _chosenDoor);
 
             Doors[doorToOpen].isOpen = true;
         }
