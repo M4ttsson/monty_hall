@@ -12,6 +12,8 @@ Web page in react with a dotnet web api backend. Created using the dotnet core R
 ## monty.test
 XUnit test project, mainly for testing the core project. 
 
+## Things to consider
+* Most methods are public for easier testing. It might be wise to consider which methods should be public/internal/private instead and rewrite some of the tests to handle it. 
 
 # Github Actions
 Building and runnning tests using github actions. 

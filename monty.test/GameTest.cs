@@ -60,9 +60,11 @@ namespace monty.test
             Assert.Equal(Prize.Goat, g.Doors[chosenDoor].prize);
 
             // TODO: Not perfect test, since the random choice might choose correct door by chance.
-            g.OpenGoatDoor();
+            int door = g.OpenGoatDoor();
 
+            Assert.NotEqual(chosenDoor, door);
             Assert.False(g.Doors[chosenDoor].isOpen);
+            Assert.False(g.Doors.First(x => x.prize == Prize.Car).isOpen);
         }
 
         [Fact] // will throw argumentoutofrange
@@ -73,6 +75,29 @@ namespace monty.test
 
             Assert.Throws<ArgumentOutOfRangeException>(() => above.Setup());
             Assert.Throws<ArgumentOutOfRangeException>(() => below.Setup());
+        }
+
+        [Fact]
+        public void TestReadyGame()
+        {
+            Game g = new Game(0, false);
+            
+            // should not be a car yet since setup not run
+            Assert.Empty(g.Doors.Where(x => x.prize == Prize.Car));
+
+            g.Run();
+
+            Assert.NotEmpty(g.Doors.Where(x => x.prize == Prize.Car));
+        }
+
+        [Fact]
+        public void TestRunGameGetPrize()
+        {
+            Game g = new Game(0, false);
+            Game g2 = new Game(1, true);
+
+            var prize1 = g.Run();
+            var prize2 = g2.Run();
         }
     }
 }
