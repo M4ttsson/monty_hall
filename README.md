@@ -23,7 +23,7 @@ chosenDoor = otherDoor;
 Testing is done in GameTest.cs in monty.test project. A couple of the tests might contain a bit of randomness due to usage of Random.Next if they break after a future code change. 
 
 ### Simulation.cs
-
+Run method will run a number of simulations. Properties will contain results. 
 
 ## monty.web
 Web page in react with a dotnet web api backend. Created using the dotnet core React template. Also contains basic testing.
