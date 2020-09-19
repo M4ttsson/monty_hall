@@ -37,7 +37,7 @@ namespace monty.core
         }
 
         // Main game method
-        public Prize Run(int chosenDoor, bool isDoorChange)
+        public Prize Run(int chosenDoor, bool changeDoor)
         {
             // 1. run setup if not done already (check with bool)
             // 2. open first door
@@ -46,14 +46,14 @@ namespace monty.core
 
             // validate player door
             if (chosenDoor > _numOfDoors - 1 || chosenDoor < 0)
-                throw new ArgumentOutOfRangeException("chosenDoor", "The chosen door exceeds number of doors or is below zero");
+                throw new ArgumentOutOfRangeException(nameof(chosenDoor), "The chosen door exceeds number of doors or is below zero");
             
             if (!_isReady)
                 Setup();
 
             int openedDoor = OpenGoatDoor(chosenDoor);
 
-            if (isDoorChange)
+            if (changeDoor)
             {
                 // Find the other door not selected by the player currently
                 var otherDoor = Doors.Select((door, index) => new {door, index}).First(x => !x.door.isOpen && x.index != chosenDoor).index;
