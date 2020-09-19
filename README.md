@@ -20,6 +20,8 @@ chosenDoor = otherDoor;
 
 ```
 
+Testing is done in GameTest.cs in monty.test project. A couple of the tests might contain a bit of randomness due to usage of Random.Next if they break after a future code change. 
+
 ### Simulation.cs
 
 
