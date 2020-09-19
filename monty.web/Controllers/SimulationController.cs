@@ -25,14 +25,18 @@ namespace monty.web.Controllers
             return "Simulation";
         }
 
+        // TODO: Make async...
         [HttpPost]
-        public string Post(int numOfSim, int chosenDoor, bool changeDoor)
+        public SimulationResponse Post([FromBody]SimulationRequest simReq)
         {
             // Validate params!
+
+            // TODO: Setup logging with path?
+            _logger.LogDebug("simulations: " + simReq.NumOfSimulations);
             
             Simulation sim = new Simulation();
-            sim.Run(numOfSim, chosenDoor, changeDoor);
-            return sim.WonCars + " " + sim.WonGoats;
+            sim.Run(simReq.NumOfSimulations, simReq.ChosenDoor, simReq.ChangeDoor);
+            return new SimulationResponse() { Cars = sim.WonCars, Goats = sim.WonGoats};
         }
     }
 
