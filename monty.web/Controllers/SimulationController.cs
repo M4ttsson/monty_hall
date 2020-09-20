@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using monty.core;
@@ -22,21 +23,34 @@ namespace monty.web.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Simulation";
+            // remove later
+            return "SimulationController";
         }
 
-        // TODO: Make async...
         [HttpPost]
-        public SimulationResponse Post([FromBody]SimulationRequest simReq)
+        public async Task<ActionResult<SimulationResponse>> Post([FromBody]SimulationRequest simReq)
         {
             // Validate params!
+            if(!simReq.Validate())
+                return BadRequest();
 
             // TODO: Setup logging with path?
             _logger.LogDebug("simulations: " + simReq.NumOfSimulations);
             
             Simulation sim = new Simulation();
-            sim.Run(simReq.NumOfSimulations, simReq.ChosenDoor, simReq.ChangeDoor);
-            return new SimulationResponse() { Cars = sim.WonCars, Goats = sim.WonGoats};
+            
+            try
+            {
+                // run in background just in case it takes time
+                await Task.Run(() => sim.Run(simReq.NumOfSimulations, simReq.ChosenDoor, simReq.ChangeDoor));
+                _logger.LogDebug($"Simulation done, cars {sim.WonCars}, goats {sim.WonGoats}");
+                return new SimulationResponse() { Cars = sim.WonCars, Goats = sim.WonGoats};
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when running simulation");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 
