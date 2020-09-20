@@ -44,7 +44,7 @@ namespace monty.web.Controllers
                 // run in background just in case it takes time
                 await Task.Run(() => sim.Run(simReq.NumOfSimulations, simReq.ChosenDoor, simReq.ChangeDoor));
                 _logger.LogDebug($"Simulation done, cars {sim.WonCars}, goats {sim.WonGoats}");
-                return new SimulationResponse() { Cars = sim.WonCars, Goats = sim.WonGoats};
+                return Ok(new SimulationResponse() { Cars = sim.WonCars, Goats = sim.WonGoats});
             }
             catch (Exception ex)
             {
