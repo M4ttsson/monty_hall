@@ -1,6 +1,9 @@
 import React from 'react';
 import { MontyHall } from './MontyHall';
-import { render, fireEvent, screen } from '@testing-library/react'
+import { render, fireEvent, screen } from '@testing-library/react';
+import { toBeInTheDocument } from '@testing-library/jest-dom/matchers';
+
+expect.extend({toBeInTheDocument});
 
 describe('monty hall tests', () => {
 
