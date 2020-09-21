@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,13 +29,13 @@ namespace monty.web.Controllers
         }
 
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<SimulationResponse>> Post([FromBody]SimulationRequest simReq)
         {
-            // Validate params!
-            if(!simReq.Validate())
-                return BadRequest();
-
-            // TODO: Setup logging with path?
+            // TODO: Setup logging to file as well (in startup)
             _logger.LogDebug("simulations: " + simReq.NumOfSimulations);
             
             Simulation sim = new Simulation();
@@ -44,7 +45,7 @@ namespace monty.web.Controllers
                 // run in background just in case it takes time
                 await Task.Run(() => sim.Run(simReq.NumOfSimulations, simReq.ChosenDoor, simReq.ChangeDoor));
                 _logger.LogDebug($"Simulation done, cars {sim.WonCars}, goats {sim.WonGoats}");
-                return Ok(new SimulationResponse() { Cars = sim.WonCars, Goats = sim.WonGoats});
+                return new SimulationResponse() { Cars = sim.WonCars, Goats = sim.WonGoats};
             }
             catch (Exception ex)
             {
