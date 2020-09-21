@@ -25,14 +25,31 @@ Testing is done in GameTest.cs in monty.test project. A couple of the tests migh
 ### Simulation.cs
 Run method will run a number of simulations. Properties will contain results. 
 
+```csharp
+
+public void Run(int totalSimulations, int chosenDoor, bool changeDoor)
+
+```
+
 ## monty.web
 Web page in react with a dotnet web api backend. Created using the dotnet core React template. Also contains basic testing.
 
+### SimulationController
+Simulation controller contains a simple Get just to check for connection. All work is done when posting. A Post request is handled async just in case the user request a lot of simulations. 
+
+Post method expect a json body with a SimulationRequest containing all required values. Automatic model validation is handled by the APIController, invalid values will return 400 errors. 
+
+One basic unit test exists in monty.test, but it is probably not the best way to test the api. It can't handle model validation since the code is called "from the side" and not through a web request. In future, maybe test from react tests?
+
+### ClientApp
+
+
 ## monty.test
-XUnit test project, mainly for testing the core project. 
+XUnit test project, mainly for testing the core project and some basic testing of api-controllers. Some of the features of the API controller does not work since calling the code from the side. 
 
 ## Things to consider
 * Most methods are public for easier testing. It might be wise to consider which methods should be public/internal/private instead and rewrite some of the tests to handle it. 
+* Api testing is lacking coverage.
 
 # Github Actions
-Building and runnning tests using github actions. 
+Building and running tests using github actions. 
