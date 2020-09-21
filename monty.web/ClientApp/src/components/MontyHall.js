@@ -31,44 +31,44 @@ export class MontyHall extends Component {
       
 
         <form onSubmit={this.handleSubmit}>
-          <div class="form-group">
-            <label for="numOfSimulations">Number of simulations</label>
-            <input type="number" defaultValue="10" class="form-control" id="numOfSimulations"/>
+          <div className="form-group">
+            <label htmlFor="numOfSimulations">Number of simulations</label>
+            <input type="number" defaultValue="10" className="form-control" id="numOfSimulations"/>
           </div>
-          <div class="form-check">
-            <div class="row">
-              <div class="col">
-                <input class="form-check-input" type="radio" name="doorRadios" id="door1" value="0" />
-                <label class="form-check-label" for="door1">
+          <div className="form-check">
+            <div className="row">
+              <div className="col">
+                <input className="form-check-input" type="radio" name="doorRadios" id="door1" value="0" />
+                <label className="form-check-label" htmlFor="door1">
                   Door 1
                 </label>
               </div>
-              <div class="col">
-                <input class="form-check-input" type="radio" name="doorRadios" id="door2" value="1" />
-                <label class="form-check-label" for="door2">
+              <div className="col">
+                <input className="form-check-input" type="radio" name="doorRadios" id="door2" value="1" />
+                <label className="form-check-label" htmlFor="door2">
                   Door 2
                 </label>
               </div>
-              <div class="col">
-                <input class="form-check-input" type="radio" name="doorRadios" id="door3" value="2" />
-                <label class="form-check-label" for="door3">
+              <div className="col">
+                <input className="form-check-input" type="radio" name="doorRadios" id="door3" value="2" />
+                <label className="form-check-label" htmlFor="door3">
                   Door 3
                 </label>
               </div>
             </div>
           </div>
           
-          <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="changeDoor"/>
-            <label class="form-check-label" for="changeDoor">Change door</label>
+          <div className="form-group form-check">
+            <input type="checkbox" className="form-check-input" id="changeDoor"/>
+            <label className="form-check-label" htmlFor="changeDoor">Change door</label>
           </div>
 
-          {/* <div class="form-group">
-            <label for="formControlRange">Example Range input</label>
-            <input type="range" class="form-control-range" id="formControlRange" max="3" min="1"/>
+          {/* <div className="form-group">
+            <label htmlFor="formControlRange">Example Range input</label>
+            <input type="range" className="form-control-range" id="formControlRange" max="3" min="1"/>
           </div> */}
           
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" className="btn btn-primary">Run simulation</button>
           
           
         </form>

@@ -10,11 +10,12 @@ describe('monty hall tests', () => {
     test('component renders', () => {
       render(<MontyHall></MontyHall>)
       //screen.debug();
-      expect(screen.getByText('The Monty Hall Problem')).toBeInTheDocument();;
+      expect(screen.getByText('The Monty Hall Problem')).toBeInTheDocument();
     })
   
-    test('true is truthy', () => {
-      expect(true).toBe(true);
+    test('Run button is showing', () => {
+      render(<MontyHall></MontyHall>)
+      expect(screen.getByText('Run simulation')).toBeInTheDocument();
     });
    
     test('false is falsy', () => {
