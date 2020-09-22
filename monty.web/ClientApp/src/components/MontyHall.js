@@ -1,23 +1,85 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export class MontyHall extends Component {
   static displayName = MontyHall.name;
 
   constructor(props) {
     super(props);
-    this.state = { currentCount: 0 }; // TODO: Fix the state
-    this.incrementCounter = this.incrementCounter.bind(this);
+    this.state = { 
+      numberOfSim: 10,
+      chosenDoor: 0,
+      changeDoor: false,
+      running: false,
+      goats: 0,
+      cars: 0
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    //this.incrementCounter = this.incrementCounter.bind(this);
   }
 
-  incrementCounter() {
+/*   incrementCounter() {
     this.setState({
       currentCount: this.state.currentCount + 1
     });
   }
-
+ */
   handleSubmit(event) {
-    console.log("submit");
     event.preventDefault();
+    this.runSimulation();
+  }
+
+  async runSimulation() {
+    const simRequest = { 
+      numOfSimulations: this.state.numberOfSim, 
+      chosenDoor: parseInt(this.state.chosenDoor),
+      changeDoor: this.state.changeDoor
+    };
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+
+    try {
+      this.setState({
+        running: true
+      });
+      const response = await axios.post('simulation', simRequest, {headers});
+      console.log(response);
+
+      this.setState({
+        goats: response.data.goats,
+        cars: response.data.cars,
+        running: false
+      });
+    } 
+    catch (error) {
+      if (error.response) {
+        // got a status code
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+      else {
+        console.log('Error', error);
+      }
+
+      // TODO: Show error response for user!
+    }
+
+
+    //this.setState({ forecasts: data, loading: false });
+
+  }
+  
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   }
 
   render() {
@@ -32,25 +94,25 @@ export class MontyHall extends Component {
 
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label htmlFor="numOfSimulations">Number of simulations</label>
-            <input type="number" defaultValue="10" className="form-control" id="numOfSimulations"/>
+            <label htmlFor="numOfSimulations">Number of simulations</label> 
+            <input type="number" className="form-control" id="numOfSimulations" name="numberOfSim" defaultValue={this.state.numberOfSim} onChange={this.handleInputChange}/>
           </div>
           <div className="form-check">
             <div className="row">
               <div className="col">
-                <input className="form-check-input" type="radio" name="doorRadios" id="door1" value="0" />
+                <input className="form-check-input" type="radio" name="chosenDoor" id="door1" value="0" defaultChecked="true"  onChange={this.handleInputChange} />
                 <label className="form-check-label" htmlFor="door1">
                   Door 1
                 </label>
               </div>
               <div className="col">
-                <input className="form-check-input" type="radio" name="doorRadios" id="door2" value="1" />
+                <input className="form-check-input" type="radio" name="chosenDoor" id="door2" value="1" onChange={this.handleInputChange} />
                 <label className="form-check-label" htmlFor="door2">
                   Door 2
                 </label>
               </div>
               <div className="col">
-                <input className="form-check-input" type="radio" name="doorRadios" id="door3" value="2" />
+                <input className="form-check-input" type="radio" name="chosenDoor" id="door3" value="2"  onChange={this.handleInputChange} />
                 <label className="form-check-label" htmlFor="door3">
                   Door 3
                 </label>
@@ -59,7 +121,7 @@ export class MontyHall extends Component {
           </div>
           
           <div className="form-group form-check">
-            <input type="checkbox" className="form-check-input" id="changeDoor"/>
+            <input type="checkbox" className="form-check-input" id="changeDoor" name="changeDoor" onChange={this.handleInputChange}/>
             <label className="form-check-label" htmlFor="changeDoor">Change door</label>
           </div>
 
@@ -72,6 +134,7 @@ export class MontyHall extends Component {
           
           
         </form>
+
 
         {/* <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
 
