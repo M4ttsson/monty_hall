@@ -171,6 +171,15 @@ export class MontyHall extends Component {
     // TODO: Known bug, progressbar will change size immediately
   }
 
+  showRunningProgress()
+  {
+    return (
+      <div>
+        <Progress animated color="info" value="100">Running Simulations</Progress>
+      </div>
+    )
+  }
+
 
   render() {
     return (
@@ -183,6 +192,11 @@ export class MontyHall extends Component {
       
         { this.showSimulationForm() }
         <br></br>
+        {
+          this.state.running
+          ? this.showRunningProgress()
+          : null
+        }
         {
           this.state.showResult 
           ? this.showResult()
@@ -197,6 +211,3 @@ export class MontyHall extends Component {
     );
   }
 }
-// TODO: dokumentera, skriv i dokumentation att skulle va snyggt med spinner. kända buggar. osv. 
-// Även simulera hastighet hade varit snyggt.
-// Städa sen. sen klart.
