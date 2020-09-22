@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Progress } from 'reactstrap';
 
 export class MontyHall extends Component {
   static displayName = MontyHall.name;
@@ -19,15 +20,9 @@ export class MontyHall extends Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    //this.incrementCounter = this.incrementCounter.bind(this);
+
   }
 
-/*   incrementCounter() {
-    this.setState({
-      currentCount: this.state.currentCount + 1
-    });
-  }
- */
   handleSubmit(event) {
     event.preventDefault();
     if (this.validateForm()) {
@@ -78,11 +73,8 @@ export class MontyHall extends Component {
         running: false,
         showError: true
       })
-      // TODO: Show error response for user!
+     
     }
-
-
-    //this.setState({ forecasts: data, loading: false });
 
   }
   
@@ -170,7 +162,13 @@ export class MontyHall extends Component {
     return (        
     <div id="simulationResult">
       <h2>Result</h2>
+      <div className="text-left">Won number of cars</div>
+      <Progress bar color="success" value={this.state.cars} max={this.state.numberOfSim}>{this.state.cars}</Progress>
+      <div className="text-left">Won number of goats</div>
+      <Progress bar color="danger" value={this.state.goats} max={this.state.numberOfSim}>{this.state.goats}</Progress>
+
     </div>)
+    // TODO: Known bug, progressbar will change size immediately
   }
 
 
@@ -195,14 +193,10 @@ export class MontyHall extends Component {
           ? this.showError()
           : null
         }
-        {/* <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
-
-        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button> */}
       </div>
     );
   }
 }
-// TODO: Visa resultatet, dokumentera, skriv i dokumentation att skulle va snyggt med spinner.
+// TODO: dokumentera, skriv i dokumentation att skulle va snyggt med spinner. kända buggar. osv. 
 // Även simulera hastighet hade varit snyggt.
 // Städa sen. sen klart.
-// TODO: Proper form validation!
