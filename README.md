@@ -42,7 +42,8 @@ Also contains basic testing of the rendered web page.
 SimulationController contains a simple Get just to check for connection. 
 All work is done when posting. 
 A Post request is handled async just in case the user request a lot of simulations.
-When running around a million simulations the response starts to take a couple of seconds. 
+I have not put an upper limit on how many simulations the user can request, it will probably time out if too high.
+A couple of tests with larger number shows that about 1 million takes 3 seconds to respond, 10 million 30 seconds and 100 million about 5 minutes. 
 
 Post method expect a json body with a SimulationRequest containing all required values. Automatic model validation is handled by the APIController, invalid values will return 400 errors. 
 
