@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { FormFeedback } from 'reactstrap';
 
 export class MontyHall extends Component {
   static displayName = MontyHall.name;
@@ -12,6 +13,8 @@ export class MontyHall extends Component {
       changeDoor: false,
       running: false,
       showResult: false,
+      showValidationError: false,
+      showError: false,
       goats: 0,
       cars: 0
     };
@@ -28,7 +31,10 @@ export class MontyHall extends Component {
  */
   handleSubmit(event) {
     event.preventDefault();
-    this.runSimulation();
+    if (this.validateForm()) {
+      this.runSimulation();
+    }
+    
   }
 
   async runSimulation() {
@@ -92,13 +98,31 @@ export class MontyHall extends Component {
     // TODO
   }
 
+  validateForm(){
+    let validationError = false;
+    // This should probably be done in a other way?
+    if (this.state.numberOfSim <= 0){
+      validationError = true;
+    }
+    this.setState({
+      showValidationError: validationError
+    });
+    return validationError;
+  }
+
   showSimulationForm() { // TOOD: Client validation!
     return (
         <div id="simulationForm">
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit} className="needs-validation" noValidate>
             <div className="form-group">
               <label htmlFor="numOfSimulations">Number of simulations</label> 
               <input type="number" className="form-control" id="numOfSimulations" name="numberOfSim" defaultValue={this.state.numberOfSim} onChange={this.handleInputChange}/>
+              {
+                this.state.showValidationError 
+                ? <div className="invalid">Please input value above 0</div>  
+                : null
+              }
+                         
             </div>
             <div className="form-check">
               <div className="row">
@@ -170,3 +194,4 @@ export class MontyHall extends Component {
 // TODO: Visa resultatet, dokumentera, skriv i dokumentation att skulle va snyggt med spinner.
 // Även simulera hastighet hade varit snyggt.
 // Städa sen. sen klart.
+// TODO: Proper form validation!
