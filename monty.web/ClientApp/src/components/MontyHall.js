@@ -11,6 +11,7 @@ export class MontyHall extends Component {
       chosenDoor: 0,
       changeDoor: false,
       running: false,
+      showResult: false,
       goats: 0,
       cars: 0
     };
@@ -50,7 +51,8 @@ export class MontyHall extends Component {
       this.setState({
         goats: response.data.goats,
         cars: response.data.cars,
-        running: false
+        running: false,
+        showResult: true
       });
     } 
     catch (error) {
@@ -63,6 +65,10 @@ export class MontyHall extends Component {
         console.log('Error', error);
       }
 
+      this.setState({
+        showResult: false,
+        running: false
+      })
       // TODO: Show error response for user!
     }
 
@@ -82,6 +88,61 @@ export class MontyHall extends Component {
     });
   }
 
+  showError(){
+    // TODO
+  }
+
+  showSimulationForm() { // TOOD: Client validation!
+    return (
+        <div id="simulationForm">
+          <form onSubmit={this.handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="numOfSimulations">Number of simulations</label> 
+              <input type="number" className="form-control" id="numOfSimulations" name="numberOfSim" defaultValue={this.state.numberOfSim} onChange={this.handleInputChange}/>
+            </div>
+            <div className="form-check">
+              <div className="row">
+                <div className="col">
+                  <input className="form-check-input" type="radio" name="chosenDoor" id="door1" value="0" defaultChecked="true"  onChange={this.handleInputChange} />
+                  <label className="form-check-label" htmlFor="door1">
+                    Door 1
+                  </label>
+                </div>
+                <div className="col">
+                  <input className="form-check-input" type="radio" name="chosenDoor" id="door2" value="1" onChange={this.handleInputChange} />
+                  <label className="form-check-label" htmlFor="door2">
+                    Door 2
+                  </label>
+                </div>
+                <div className="col">
+                  <input className="form-check-input" type="radio" name="chosenDoor" id="door3" value="2"  onChange={this.handleInputChange} />
+                  <label className="form-check-label" htmlFor="door3">
+                    Door 3
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div className="form-group form-check">
+              <input type="checkbox" className="form-check-input" id="changeDoor" name="changeDoor" onChange={this.handleInputChange}/>
+              <label className="form-check-label" htmlFor="changeDoor">Change door</label>
+            </div>
+            
+            <button type="submit" className="btn btn-primary">Run simulation</button>
+          </form>
+        </div>
+    )
+  }
+
+  showResult()
+  {
+    return (        
+    <div id="simulationResult">
+      <h2>Result</h2>
+    </div>)
+  }
+
+
   render() {
     return (
       <div>
@@ -91,50 +152,13 @@ export class MontyHall extends Component {
         <p>Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors, opens another door, say No. 3, which has a goat. He then says to you, "Do you want to pick door No. 2?" Is it to your advantage to switch your choice?</p>
         <p><strong>This is a simulation of the problem so you can test your strategy, change door or not as well as which door to choose in case you have to do it for real one day in the future</strong></p>
       
-
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="numOfSimulations">Number of simulations</label> 
-            <input type="number" className="form-control" id="numOfSimulations" name="numberOfSim" defaultValue={this.state.numberOfSim} onChange={this.handleInputChange}/>
-          </div>
-          <div className="form-check">
-            <div className="row">
-              <div className="col">
-                <input className="form-check-input" type="radio" name="chosenDoor" id="door1" value="0" defaultChecked="true"  onChange={this.handleInputChange} />
-                <label className="form-check-label" htmlFor="door1">
-                  Door 1
-                </label>
-              </div>
-              <div className="col">
-                <input className="form-check-input" type="radio" name="chosenDoor" id="door2" value="1" onChange={this.handleInputChange} />
-                <label className="form-check-label" htmlFor="door2">
-                  Door 2
-                </label>
-              </div>
-              <div className="col">
-                <input className="form-check-input" type="radio" name="chosenDoor" id="door3" value="2"  onChange={this.handleInputChange} />
-                <label className="form-check-label" htmlFor="door3">
-                  Door 3
-                </label>
-              </div>
-            </div>
-          </div>
-          
-          <div className="form-group form-check">
-            <input type="checkbox" className="form-check-input" id="changeDoor" name="changeDoor" onChange={this.handleInputChange}/>
-            <label className="form-check-label" htmlFor="changeDoor">Change door</label>
-          </div>
-
-          {/* <div className="form-group">
-            <label htmlFor="formControlRange">Example Range input</label>
-            <input type="range" className="form-control-range" id="formControlRange" max="3" min="1"/>
-          </div> */}
-          
-          <button type="submit" className="btn btn-primary">Run simulation</button>
-          
-          
-        </form>
-
+        { this.showSimulationForm() }
+        <br></br>
+        {
+          this.state.showResult 
+          ? this.showResult()
+          : null
+        }
 
         {/* <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
 
@@ -143,3 +167,6 @@ export class MontyHall extends Component {
     );
   }
 }
+// TODO: Visa resultatet, dokumentera, skriv i dokumentation att skulle va snyggt med spinner.
+// Även simulera hastighet hade varit snyggt.
+// Städa sen. sen klart.
