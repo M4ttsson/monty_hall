@@ -15,4 +15,10 @@ code {
 
 .invalid {
   color: red;
+  font-size: large;
+}
+
+.error {
+  color: red;
+  font-size: larger;
 }

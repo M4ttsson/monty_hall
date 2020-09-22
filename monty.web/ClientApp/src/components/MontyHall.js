@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { FormFeedback } from 'reactstrap';
 
 export class MontyHall extends Component {
   static displayName = MontyHall.name;
@@ -32,6 +31,12 @@ export class MontyHall extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.validateForm()) {
+      this.setState({
+        running: true,
+        showError: false,
+        showResult: false
+      });
+
       this.runSimulation();
     }
     
@@ -39,7 +44,7 @@ export class MontyHall extends Component {
 
   async runSimulation() {
     const simRequest = { 
-      numOfSimulations: this.state.numberOfSim, 
+      numOfSimulations: parseInt(this.state.numberOfSim), 
       chosenDoor: parseInt(this.state.chosenDoor),
       changeDoor: this.state.changeDoor
     };
@@ -48,9 +53,6 @@ export class MontyHall extends Component {
     }
 
     try {
-      this.setState({
-        running: true
-      });
       const response = await axios.post('simulation', simRequest, {headers});
       console.log(response);
 
@@ -58,7 +60,7 @@ export class MontyHall extends Component {
         goats: response.data.goats,
         cars: response.data.cars,
         running: false,
-        showResult: true
+        showResult: true,
       });
     } 
     catch (error) {
@@ -73,7 +75,8 @@ export class MontyHall extends Component {
 
       this.setState({
         showResult: false,
-        running: false
+        running: false,
+        showError: true
       })
       // TODO: Show error response for user!
     }
@@ -95,22 +98,26 @@ export class MontyHall extends Component {
   }
 
   showError(){
-    // TODO
+    return (
+      <div className="error">
+        Something went wrong, please try again!
+      </div>
+    )
   }
 
   validateForm(){
-    let validationError = false;
+    let isValid = true;
     // This should probably be done in a other way?
     if (this.state.numberOfSim <= 0){
-      validationError = true;
+      isValid = false;
     }
     this.setState({
-      showValidationError: validationError
+      showValidationError: !isValid // TODO: fix, this is ugly...
     });
-    return validationError;
+    return isValid;
   }
 
-  showSimulationForm() { // TOOD: Client validation!
+  showSimulationForm() {
     return (
         <div id="simulationForm">
           <form onSubmit={this.handleSubmit} className="needs-validation" noValidate>
@@ -183,7 +190,11 @@ export class MontyHall extends Component {
           ? this.showResult()
           : null
         }
-
+        {
+          this.state.showError
+          ? this.showError()
+          : null
+        }
         {/* <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
 
         <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button> */}

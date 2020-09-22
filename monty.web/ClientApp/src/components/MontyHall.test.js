@@ -1,7 +1,7 @@
 import React from 'react';
 import { MontyHall } from './MontyHall';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { toBeInTheDocument } from '@testing-library/jest-dom/matchers';
+import { toBeInTheDocument, not } from '@testing-library/jest-dom/matchers';
 
 expect.extend({toBeInTheDocument});
 
@@ -18,7 +18,9 @@ describe('monty hall tests', () => {
       expect(screen.getByText('Run simulation')).toBeInTheDocument();
     });
    
-    test('false is falsy', () => {
-      expect(false).toBe(false);
+    test('result is not shown yet', () => {
+      render(<MontyHall></MontyHall>)
+      const resultText = screen.queryByText('Result')
+      expect(resultText).not.toBeInTheDocument();
     });
   });
