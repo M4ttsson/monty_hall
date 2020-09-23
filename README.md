@@ -1,6 +1,8 @@
 # monty_hall
 Simulation for the Monty Hall problem
 
+![image of the website](https://github.com/M4ttsson/monty_hall/raw/master/image.png)
+
 # Project
 
 ## monty.core
